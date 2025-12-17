@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  swr-monte-carlo:
+    build: .
+    image: swr-monte-carlo:latest
+    container_name: swr-monte-carlo
+    volumes:
+      # Mount outputs directory to persist CSV results
+      - ./outputs:/app/outputs
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Override default command to run interactive simulation
+    # You can customize these parameters
+    command: >
+      python SWR_Monte_Carlo.py
+      --portfolio 2
+      --initial-value 1000000
+      --withdrawal-rate 3.0
+      --years 50
+      --simulations 10000
+      --advisor-fee 0.0
+
+# Usage Examples:
+# ===============
+#
+# Build the image:
+#   docker-compose build
+#
+# Run with default parameters (Portfolio 2, $1M, 3% withdrawal, 50 years):
+#   docker-compose run --rm swr-monte-carlo
+#
+# Run with custom parameters:
+#   docker-compose run --rm swr-monte-carlo python SWR_Monte_Carlo.py --portfolio 1 --withdrawal-rate 3.5 --fat-tails
+#
+# Run interactively (enter container):
+#   docker-compose run --rm swr-monte-carlo /bin/bash
+#
+# View help:
+#   docker-compose run --rm swr-monte-carlo python SWR_Monte_Carlo.py --help
