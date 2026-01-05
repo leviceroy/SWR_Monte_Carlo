@@ -1,7 +1,7 @@
   ---
-  📊 Monte Carlo v3.0 - Complete Multi-Portfolio Analysis
+  📊 Monte Carlo v3.2 - Complete Multi-Portfolio Analysis
 
-  🎯 What's New in v3.0
+  🎯 What's New in v3.2
 
   ✅ 4 Portfolio Presets - Choose before running simulation
   ✅ Command-line interface - Easy portfolio selection

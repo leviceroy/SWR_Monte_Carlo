@@ -93,7 +93,7 @@ git add .
 git status
 
 # Create first commit
-git commit -m "Initial commit: Monte Carlo retirement simulator v3.0
+git commit -m "Initial commit: Monte Carlo retirement simulator v3.2
 
 Features:
 - 4 portfolio presets (Dividend, Three-Fund, Golden Butterfly, Modern Bogleheads)
@@ -106,7 +106,7 @@ Features:
 
 **Expected output:**
 ```
-[main (root-commit) abc1234] Initial commit: Monte Carlo retirement simulator v3.0
+[main (root-commit) abc1234] Initial commit: Monte Carlo retirement simulator v3.2
  10 files changed, 2847 insertions(+)
  create mode 100644 .dockerignore
  create mode 100644 .gitignore
@@ -253,11 +253,11 @@ https://github.com/leviceroy/SWR_Monte_Carlo
 2. Click **"Create a new release"**
 3. Configure:
    ```
-   Tag version: v3.0
-   Release title: v3.0 - Initial Release
+   Tag version: v3.2
+   Release title: v3.2 - Latest Release
    Description:
 
-   ## SWR Monte Carlo Simulator v3.0
+   ## SWR Monte Carlo Simulator v3.2
 
    **Features:**
    - 4 portfolio presets (Dividend, Three-Fund, Golden Butterfly, Modern)
@@ -600,7 +600,7 @@ Enable in Settings → Features → Discussions
 - [ ] LICENSE added
 - [ ] .gitignore working (outputs/ not tracked)
 - [ ] Topics/tags added
-- [ ] Release v3.0 created
+- [ ] Release v3.2 created
 - [ ] Repository settings configured
 - [ ] Shared on social media (optional)
 

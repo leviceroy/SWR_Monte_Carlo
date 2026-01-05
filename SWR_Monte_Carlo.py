@@ -1,8 +1,8 @@
 """
-Monte Carlo Portfolio Retirement Simulator v3.0
+Monte Carlo Portfolio Retirement Simulator v3.2
 ================================================
 
-NEW IN v3.0:
+NEW IN v3.2:
 - 4 Portfolio Presets to Choose From:
   1. Dividend-Focused (Original - VTI/SCHG/SCHD/SGOV)
   2. Classic Three-Fund Bogleheads (VTI/VXUS/BND)
@@ -465,7 +465,7 @@ fee_cost_on_initial = INITIAL_VALUE * fee_impact_total
 
 # --- 8. DISPLAY RESULTS ---
 print("\n" + "="*70)
-print("MONTE CARLO PORTFOLIO RETIREMENT SIMULATOR v3.0")
+print("MONTE CARLO PORTFOLIO RETIREMENT SIMULATOR v3.2")
 print("="*70)
 print(f"\n--- Selected Portfolio: {selected_portfolio['name']} ---")
 print(f"Description: {selected_portfolio['description']}\n")

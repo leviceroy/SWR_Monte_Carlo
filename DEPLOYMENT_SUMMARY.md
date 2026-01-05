@@ -189,12 +189,12 @@ finance-calculator
 ### Step 5: Create First Release (Optional)
 
 1. Repository → Releases → "Create a new release"
-2. Tag: `v3.0`
-3. Title: `v3.0 - Initial Release`
+2. Tag: `v3.2`
+3. Title: `v3.2 - Latest Release`
 4. Description:
 
 ```markdown
-## SWR Monte Carlo Simulator v3.0
+## SWR Monte Carlo Simulator v3.2
 
 First public release of the Safe Withdrawal Rate Monte Carlo simulator.
 
@@ -286,7 +286,7 @@ GITHUB_SETUP.md              [GitHub repository management]
 ├── Maintenance
 └── Versioning
 
-ReadME_V3.md                 [Technical details from v3.0]
+ReadME_V3.md                 [Technical details from v3.2]
 ├── Implementation Details
 ├── Mathematical Methodology
 └── Version History
@@ -434,7 +434,7 @@ Before going live:
 - [ ] Push to GitHub
 - [ ] Verify all files uploaded
 - [ ] Add topics/tags
-- [ ] Create v3.0 release
+- [ ] Create v3.2 release
 
 ---
 
