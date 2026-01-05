@@ -20,7 +20,7 @@ Run thousands of **monthly-precision** retirement simulations to answer:
 
 **Unlike simple calculators**, this one models:
 - ✅ **Monthly simulation** (600 months for 50 years) for accurate modeling
-- ✅ **Constant dollar withdrawals** (traditional SWR methodology)
+- ✅ **Two withdrawal strategies**: Constant dollar (traditional SWR) & Dynamic spending (Vanguard method)
 - ✅ Market volatility (not just average returns)
 - ✅ Sequence of returns risk
 - ✅ Annual rebalancing
@@ -35,7 +35,7 @@ Run thousands of **monthly-precision** retirement simulations to answer:
 ## 📊 4 Portfolio Strategies
 
 ### 1. Dividend-Focused Portfolio (my own!)
-**Assets:** VTI (40%) • SCHG (30%) • SCHD (25%) • SGOV (5%)
+**Assets:** VTI (35%) • SCHG (15%) • SCHD (30%) • SGOV (20%)
 **ER:** 0.0525% | **Best For:** Income seekers, dividend growth investors
 
 ### 2. Classic Three-Fund Bogleheads ⭐ **RECOMMENDED**
@@ -106,6 +106,23 @@ python SWR_Monte_Carlo.py --portfolio 2 --withdrawal-rate 3.0
 python SWR_Monte_Carlo.py --portfolio 2
 ```
 
+### Dynamic Withdrawal Strategy (Vanguard Method)
+```bash
+python SWR_Monte_Carlo.py \
+  --portfolio 2 \
+  --withdrawal-rate 3.0 \
+  --withdrawal-strategy dynamic
+```
+
+### Custom Dynamic Spending Bounds
+```bash
+python SWR_Monte_Carlo.py \
+  --portfolio 2 \
+  --withdrawal-strategy dynamic \
+  --dynamic-floor 3.0 \
+  --dynamic-ceiling 6.0
+```
+
 ### Aggressive 4% Withdrawal with Fat-Tail Mode
 ```bash
 python SWR_Monte_Carlo.py \
@@ -145,10 +162,14 @@ python SWR_Monte_Carlo.py \
 | `--portfolio` | `-p` | `1` | Portfolio (1-4) |
 | `--initial-value` | `-i` | `1000000` | Starting portfolio value |
 | `--withdrawal-rate` | `-w` | `3.0` | Annual withdrawal % |
+| `--withdrawal-strategy` | | `constant` | Withdrawal strategy: `constant` or `dynamic` |
+| `--dynamic-floor` | | `2.5` | Dynamic spending floor % below inflation-adjusted |
+| `--dynamic-ceiling` | | `5.0` | Dynamic spending ceiling % above inflation-adjusted |
 | `--years` | `-y` | `50` | Retirement duration (years) |
-| `--simulations` | `-s` | `10000` | Number of Monte Carlo paths |
+| `--simulations` | `-s` | `100000` | Number of Monte Carlo paths |
 | `--advisor-fee` | `-f` | `0.0` | Additional advisor fee % |
 | `--fat-tails` | | `False` | Enable black swan modeling |
+| `--list-portfolios` | | | List all available portfolios and exit |
 
 **View all options:**
 ```bash
@@ -243,21 +264,31 @@ docker rmi swr-monte-carlo
 5. **Annual Rebalancing**: Reset to target allocation each December
 6. **Track Statistics**: Record percentiles, drawdowns, depletion events
 
-### Withdrawal Strategy: Constant Dollar (Traditional SWR)
+### Withdrawal Strategies
+
+#### 1. Constant Dollar (Traditional SWR) - Default
 
 **Year 1:** Withdraw X% of initial $1,000,000 = $30,000 (if 3%)
 **Year 2:** Withdraw $30,000 × 1.025 (inflation) = $30,750
 **Year 3:** Withdraw $30,750 × 1.025 = $31,519
 **And so on...**
 
-This is different from "variable percentage withdrawal" where you would withdraw 3% of whatever your current balance is. Constant dollar withdrawals match the Trinity Study and traditional SWR research.
-The current strategy prioritizes inflation-adjusted stability to ensure a consistent quality of life regardless of market shifts. 
-In my next calculator version I will add this widhdrawal strategy in order to have a better comparison. 
+This matches the Trinity Study and traditional SWR research. Prioritizes inflation-adjusted stability to ensure a consistent quality of life regardless of market shifts.
+
+#### 2. Dynamic Spending (Vanguard Method)
+
+Adjusts withdrawals based on portfolio performance while maintaining guardrails:
+- **Target:** X% of current portfolio balance
+- **Floor:** Cannot drop more than 2.5% (default) below inflation-adjusted prior year
+- **Ceiling:** Cannot rise more than 5.0% (default) above inflation-adjusted prior year
+- **Benefit:** Reduces depletion risk significantly while allowing spending to grow with portfolio
+
+This is different from "variable percentage withdrawal" where you simply withdraw X% of current balance with no guardrails. 
 
 ### Key Features
 
 ✅ **Monthly Precision** - 600 data points over 50 years (not just 50 annual)
-✅ **Constant Dollar Withdrawals** - Traditional SWR methodology
+✅ **Dual Withdrawal Strategies** - Traditional constant dollar + dynamic spending (Vanguard method)
 ✅ **Geometric Returns** - Not arithmetic (critical for accuracy)
 ✅ **Correct Order** - Returns applied first, then withdrawals
 ✅ **Annual Inflation** - 2.5% compounded yearly, not monthly
@@ -268,12 +299,12 @@ In my next calculator version I will add this widhdrawal strategy in order to ha
 ✅ **Depletion Threshold** - Uses <$1 threshold for accurate failure detection
 ✅ **Return Bounds** - Clips returns to realistic range (-95% to +500%)
 
-### What This Model can NOT! 
+### What This Model Cannot Do
 
 ⚠️ **Market Regime Changes** - Returns vary by decade (1970s: 5.9%, 2000s: -0.9%, 2010s: 13.6%)
 ⚠️ **True Black Swans** - Even fat-tail mode can't predict 2008-level crashes
-⚠️ **Taxes** - Global tool, tax rules vary by country/account type. I did this on purpose. 
-⚠️ **Dynamic Strategies** - No variable withdrawal rates (yet)
+⚠️ **Taxes** - Global tool, tax rules vary by country/account type. I did this on purpose.
+⚠️ **Advanced Withdrawal Strategies** - No Guyton-Klinger or other complex rule-based strategies (yet)
 
 ---
 
@@ -301,6 +332,23 @@ In my next calculator version I will add this widhdrawal strategy in order to ha
 - **3.5-4% has moderate-high risk** for 50 years (but acceptable for 30 years)
 - **4%+ is aggressive** for early retirees with 50-year horizons
 
+### Dynamic vs Constant Withdrawal Strategy Comparison
+
+**Dynamic Spending (Vanguard Method) Benefits:**
+- **Lower depletion risk** - Typically 50-70% reduction in failure probability
+- **Higher median outcomes** - Portfolio grows more in good markets
+- **Flexibility** - Spending adjusts to market conditions
+- **Upside potential** - Can spend more when portfolio performs well
+
+**Trade-offs:**
+- **Variable spending** - Annual withdrawals fluctuate (within guardrails)
+- **Complexity** - Requires annual adjustments vs. set-it-and-forget-it
+- **Psychological** - Must adapt lifestyle to changing withdrawal amounts
+
+**When to use each:**
+- **Constant:** Prefer predictable income, willing to accept higher depletion risk for stability
+- **Dynamic:** Prefer flexibility, want to maximize portfolio longevity and upside potential
+
 ---
 
 ## 📚 Documentation
@@ -314,7 +362,10 @@ In my next calculator version I will add this widhdrawal strategy in order to ha
 ## 🤝 Contributing
 
 Contributions are welcome! Areas for improvement:
-- [ ] Variable withdrawal strategies (Guyton-Klinger, dynamic)
+- [ ] Additional withdrawal strategies (Guyton-Klinger, VPW)
+- [ ] Tax modeling for different jurisdictions
+- [ ] Web interface/GUI
+- [ ] Historical backtesting mode
 
 **If you want to contribute:**
 1. Fork the repository
@@ -378,15 +429,38 @@ See [LICENSE](LICENSE) for details.
 
 ## 📈 Roadmap
 
-**v4.0 (Planned)**
-- [ ] Variable withdrawal strategies (Guyton-Klinger, dynamic)
+**Future Versions**
+- [ ] Additional withdrawal strategies (Guyton-Klinger, VPW, CAPE-based)
 - [ ] Tax modeling for different jurisdictions
 - [ ] Web interface/GUI
 - [ ] Historical backtesting mode
+- [ ] Multi-currency support
+- [ ] Social Security integration
 
 ---
 
 ## 📝 Changelog
+
+### v3.2 (January 2026) - NEW FEATURE: Dynamic Withdrawal Strategy ✅
+
+**🎯 Major New Feature:**
+
+1. **Dynamic Withdrawal Strategy (Vanguard Method)** ✅ NEW
+   - Adjusts withdrawals based on portfolio performance
+   - Customizable floor and ceiling guardrails
+   - Significantly reduces depletion risk vs constant withdrawals
+   - Allows spending to grow with portfolio success
+
+**Command-Line Additions:**
+   - `--withdrawal-strategy {constant,dynamic}` - Choose withdrawal method
+   - `--dynamic-floor X.X` - Set floor percentage (default: 2.5%)
+   - `--dynamic-ceiling X.X` - Set ceiling percentage (default: 5.0%)
+   - `--list-portfolios` - List all portfolio options
+
+**Improvements:**
+   - Updated Portfolio 1 allocations for better balance
+   - Enhanced output formatting with withdrawal analysis tables
+   - Better documentation of withdrawal strategies
 
 ### v3.1 (December 2025) - CRITICAL FIXES ✅
 
